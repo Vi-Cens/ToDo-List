@@ -1,0 +1,19 @@
+#container{
+	width: 360px;
+	margin: 0 auto;
+	border: 2px solid gray; 
+}
+
+
+.completed{
+	color: gray;
+	text-decoration: line-through; 
+}
+
+h1{
+	text-transform: uppercase;
+}
+
+body{
+	background-color:#ff45;
+}
