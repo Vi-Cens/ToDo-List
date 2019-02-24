@@ -6,9 +6,10 @@ const {PORT = 3000} = process.env //Set port for node
 
 app.use(bodyParser.json());  //tells our app to use bodyparser
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname)); //tells express where to look
 
 app.get("/", function(req, res){
-    res.send("HURROOOOOO!");
+    res.sendFile("index.html");
 });
 
 //READ ROUTE
