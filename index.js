@@ -24,7 +24,7 @@ app.get("/api/todos", function(req, res){
 
 //CREATE ROUTE
 app.post("/api/todos", function(req, res){
-    //bodyparser to acces post data for express
+    //bodyparser to access post data for express
     db.Todo.create(req.body)
     .then(function(newTodo){
         res.json(newTodo);
@@ -34,6 +34,27 @@ app.post("/api/todos", function(req, res){
     })
 });
 
+//UPDATE ROUTE
+app.put("/api/todos/:todoId", function(req, res){
+    db.Todo.findOneAndUpdate({_id: req.params.todoId}, req.body, {new: true})   //new true shows new data in put request
+    .then(function(todo){
+        res.json(todo);
+    })
+    .catch(function(err){
+        res.send(err);
+    })
+});
+
+//DELETE ROUTE
+app.delete("/api/todos/:todoId", function(req, res){
+    db.Todo.remove({_id: req.params.todoId})
+    .then(function(){
+        res.json({message: "Deleted"});
+    })
+    .catch(function(err){
+        res.send(err);
+    })
+});
 
 app.listen(PORT, function(){
     console.log("APP IS RUNNING ON PORT " + PORT);
