@@ -1,49 +1,34 @@
 //get elements from api db
 $(document).ready(function(){
 	$.getJSON("/api/todos")
-	.then(addTodos)
+	.then(addAllTodos)
 
 	//insert todos from db to page
-	function addTodos(todos){
+	function addAllTodos(todos){
 		todos.forEach(function(todo){
-			//create our new todo
-			var newTodo = $("<li class='task' >" + "<span>X </span>" + todo.name + "</li>");
-			//store todo id
-			newTodo.data("id", todo._id);
-			//add completed boolean
-			newTodo.data("completed", todo.completed);
-			//add completed class to todo
-			if(todo.completed){
-				newTodo.addClass("completed");
-			}
-			//append new todo
-			$(".list").append(newTodo);
+			//duplicated code made into function
+			addSingleTodo(todo);
+			//_.sortBy(todo, ['name', 1]);
 		});
-	}
-
+	};
+/*
+	$("#container").on("click", "span", function(todos){
+		//when clicked sort todo array
+		todos.sort();
+	});
+*/
 	//create new todo
 	//listens to keypress
-	$("#todoInput").keypress(function(event){		
-		if(event.which === 13){
+	$("#todoInput").keypress(function(event){	
+		var userInput = $("#todoInput").val();	
+		//listen for enter key and check that input is not empty
+		if(event.which === 13 && userInput.length != 0){
 			//send request to create todo
-			var userInput = $("#todoInput").val();
 			$.post("/api/todos", {name: userInput})
 			.then(function(todoData){
-				console.log(todoData);
-				//clear input
-				$("#todoInput").val("");
-				//create our new todo
-				var newTodo = $("<li class='task' >" + "<span>X </span>" + todoData.name + "</li>");
-				//store todo id
-				newTodo.data("id", todoData._id);
-				//add completed boolean
-				newTodo.data("completed", todoData.completed);
-				//add completed class to todo
-				if(todoData.completed){
-					newTodo.addClass("completed");
-				}
-				//append new todo
-				$(".list").append(newTodo);
+				//clear user input
+				$('#todoInput').val('');
+				addSingleTodo(todoData);
 			})
 			.catch(function(err){
 				console.log(err);
@@ -68,7 +53,6 @@ $(document).ready(function(){
 			data: updateData 
 		})
 		.then(function(updated){
-			console.log(update);
 			update.toggleClass("completed");
 			update.data("completed", !isDone);
 		})
@@ -100,40 +84,18 @@ $(document).ready(function(){
 		})
 	});
 });
-/*
-function addTodos(todos) {
-	//add todos to page here
-	todos.forEach(function(todo){
-	  addTodo(todo);
-	});
-  }
 
-function createTodo(){
-	//send request to create new todo
-	var usrInput = $('#todoInput').val();
-	$.post('/api/todos',{name: usrInput})
-	.then(function(newTodo){
-	  $('#todoInput').val('');
-	  addTodo(newTodo);
-	})
-	.catch(function(err){
-	  console.log(err);
-	})
-  }
-
-  function addTodo(todo){
-	var newTodo = $('<li class="task">'+todo.name +' <span>X</span></li>');
-	newTodo.data('id', todo._id);
-	newTodo.data('completed', todo.completed);
-	if(todo.completed){
-	  newTodo.addClass("done");
+function addSingleTodo(todoData){
+	//create our new todo
+	var newTodo = $("<li class='task' >" + "<span>X </span>" + todoData.name + "</li>");
+	//store todo id
+	newTodo.data("id", todoData._id);
+	//add completed boolean
+	newTodo.data("completed", todoData.completed);
+	//add completed class to todo
+	if(todoData.completed){
+		newTodo.addClass("completed");
 	}
-	$('.list').append(newTodo);
-  }
-
-  $('#todoInput').keypress(function(event){
-    if(event.which == 13) {
-      createTodo();
-    }
-  });
-  */
+	//append new todo
+	$(".list").append(newTodo);
+};

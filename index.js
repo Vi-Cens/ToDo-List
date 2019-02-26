@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var db = require("./models") //use schema from models
 var bodyParser = require("body-parser");
+var _ = require("lodash");
 const {PORT = 3000} = process.env //Set port for node 
 
 app.use(bodyParser.json());  //tells our app to use bodyparser
@@ -15,6 +16,7 @@ app.get("/", function(req, res){
 //READ ROUTE
 app.get("/api/todos", function(req, res){
     db.Todo.find()
+    //db.Todo.find().sort({'name': 1})
     .then(function(todos){
         res.json(todos);
     })
@@ -37,7 +39,8 @@ app.post("/api/todos", function(req, res){
 
 //UPDATE ROUTE
 app.put("/api/todos/:todoId", function(req, res){
-    db.Todo.findOneAndUpdate({_id: req.params.todoId}, req.body, {new: true})   //new true shows new data in put request
+    //new true shows new data in put request
+    db.Todo.findOneAndUpdate({_id: req.params.todoId}, req.body, {new: true})
     .then(function(todo){
         res.json(todo);
     })

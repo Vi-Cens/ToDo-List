@@ -1,0 +1,38 @@
+$colors:(
+    primary: #0a0f51,
+    accent: #ffe
+);
+
+body, html{
+    height: 100%;
+}
+
+body{
+    font-family: "Raleway";
+    margin: 0;
+
+    #bg{
+        clip-path: polygon(0 0, 45% 0, 100% 100%, 0% 100%);
+        background-color: map-get($colors ,primary);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: -1;
+    }
+}
+
+#container{
+	width: 360px;
+	margin: 0 auto;
+    border: 2px solid gray; 
+}
+
+.completed{
+	color: rgba(240, 231, 231, 0.527);
+	text-decoration: line-through; 
+}
+
+h1{
+	text-transform: uppercase;
+}
+
