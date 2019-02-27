@@ -49,6 +49,17 @@ ul{
     margin: 0;
 }
 
+@include desktop{
+    .navbar-brand{
+        opacity: 0;
+    }
+    .navbar-nav{
+        float: right;
+        text-align: right;
+        padding: 3px;
+    }
+}
+
 #container{
         width: 100%;
         margin: 0 auto;
@@ -61,8 +72,16 @@ ul{
         //position: sticky;
 
         .completed{
-            color:rgba(146, 141, 141, 0.527);
-            text-decoration: line-through;     
+            color: #297fb95b;
+            //color:rgba(146, 141, 141, 0.527);
+            text-decoration: line-through;  
+            .fa-check-circle{
+                color: #2980b9;
+
+            }
+        }
+        .fa-check-circle{
+            color: #c9c7c75d;
         }
 
     span {

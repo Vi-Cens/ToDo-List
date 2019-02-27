@@ -49,8 +49,7 @@ $("i").on("click", function(){
 		}
 	});
 
-	$(document).on('click', '#editable', function(event) 
-{
+	$(document).on('click', '#editable', function(event){
 	event.preventDefault(); 
 	if($(this).attr('edit_type') == 'button')
 	{
@@ -82,16 +81,17 @@ $("i").on("click", function(){
 		}
 	});
 });
-
 	//check off specific todos when clicked
 	//use on not click function to listen on already created item
-	$("ul").on("click", "li", function(){	
-		//get id from db
-		let clickedId = $(this).data("id");
+	$("ul").on("click", ".fa-check-circle", function(event){	
+		event.stopPropagation();
+		let clickedId = $(this).parent().data("id");
 		//get completed status from db
-		let isDone = $(this).data("completed");
+		let isDone = $(this).parent().data("completed");
 		//cant call this inside then function, out of scope
-		let update = $(this);
+		let update = $(this).parent();
+		console.log(update);
+
 		//put request !isDone so true => false
 		let updateData = {completed: !isDone}
 		$.ajax({
@@ -107,7 +107,7 @@ $("i").on("click", function(){
 			console.log(err);
 		})
 	});
-
+	
 	//remove todo when click on X
 	//add listener on list class, only on span elements
 	$("ul").on("click", "span", function(event){	

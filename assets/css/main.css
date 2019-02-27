@@ -40,6 +40,17 @@ ul {
   margin: 0;
 }
 
+@media (min-width: 840px) {
+  .navbar-brand {
+    opacity: 0;
+  }
+  .navbar-nav {
+    float: right;
+    text-align: right;
+    padding: 3px;
+  }
+}
+
 #container {
   width: 100%;
   margin: 0 auto;
@@ -48,8 +59,16 @@ ul {
 }
 
 #container .completed {
-  color: rgba(146, 141, 141, 0.527);
+  color: #297fb95b;
   text-decoration: line-through;
+}
+
+#container .completed .fa-check-circle {
+  color: #2980b9;
+}
+
+#container .fa-check-circle {
+  color: #c9c7c75d;
 }
 
 #container span {
