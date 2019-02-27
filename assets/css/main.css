@@ -1,20 +1,37 @@
+#plusSign {
+  margin: auto 10px;
+  color: #f7f7f7;
+}
+
+@media (min-width: 840px) {
+  #plusSign {
+    display: none;
+  }
+}
+
 body {
   font-family: "Raleway";
   height: 100%;
+  background-color: rgba(37, 124, 139, 0.685);
 }
 
 h1 {
-  color: white;
-  background: #2980b9;
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  font-weight: normal;
-  margin-bottom: 0;
+  display: none;
 }
 
-h1 .fa-pencil-alt {
-  float: right;
+@media (min-width: 840px) {
+  h1 {
+    color: white;
+    background: #2980b9;
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+  h1 .fa-pencil-alt {
+    float: right;
+  }
 }
 
 ul {
@@ -23,16 +40,16 @@ ul {
   margin: 0;
 }
 
-.completed {
-  color: rgba(240, 231, 231, 0.527);
-  text-decoration: line-through;
-}
-
 #container {
   width: 100%;
   margin: 0 auto;
   -webkit-box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
           box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#container .completed {
+  color: rgba(146, 141, 141, 0.527);
+  text-decoration: line-through;
 }
 
 #container span {
@@ -71,18 +88,33 @@ ul {
   }
 }
 
+#container .fa-check-circle {
+  float: right;
+  margin: 10px auto;
+  margin-right: 10px;
+}
+
 input {
   width: 100%;
   font-size: 18px;
-  background-color: #f7f7f7;
+  background-color: #ebebeb;
   padding: 13px 13px 13px 20px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: inline-block;
 }
 
 input:focus {
   background: #fff;
   border: 3px solid #2980b9;
   outline: none;
+}
+
+@media (min-width: 840px) {
+  input {
+    display: none;
+  }
 }
 /*# sourceMappingURL=main.css.map */

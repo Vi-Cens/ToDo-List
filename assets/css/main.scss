@@ -4,7 +4,7 @@ $colors:(
     accent: #ffe
 );
 
-$desktop: 840px;
+$desktop: 840px; 
 
 @mixin desktop {
     @media (min-width: #{$desktop}){
@@ -12,12 +12,24 @@ $desktop: 840px;
     }
 }
 
+#plusSign{
+    margin: auto 10px;
+    color: #f7f7f7;
+    @include desktop{
+        display: none;
+    }
+}
+
 body{
     font-family: "Raleway";
     height: 100%;
+    background-color: rgba(37, 124, 139, 0.685);
 }
 
 h1{
+    display:none;
+
+    @include desktop{
     color: white;
     background: #2980b9;
     display: block;
@@ -27,6 +39,7 @@ h1{
     margin-bottom: 0;
     .fa-pencil-alt{
         float: right;
+        }
     }
 }
 
@@ -34,11 +47,6 @@ ul{
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.completed{
-    color: rgba(240, 231, 231, 0.527);
-    text-decoration: line-through; 
 }
 
 #container{
@@ -51,6 +59,11 @@ ul{
         //padding: 15px auto;
         //border: 2px solid gray; 
         //position: sticky;
+
+        .completed{
+            color:rgba(146, 141, 141, 0.527);
+            text-decoration: line-through;     
+        }
 
     span {
         background: #e74c3c;
@@ -82,17 +95,29 @@ ul{
         width: 70%;
         margin: 75px auto;
     }
+
+    .fa-check-circle{
+        float: right;
+        margin: 10px auto;
+        margin-right: 10px;
+    }
 }
 
 input{
     width: 100%;
     font-size: 18px;
-    background-color: #f7f7f7;
+    background-color: #ebebeb;
     padding: 13px 13px 13px 20px;
     box-sizing: border-box;
+    border: 3px solid rgba(0, 0, 0, 0);
+    opacity: 1;
+    display: inline-block;
     &:focus{
         background: #fff;
         border: 3px solid #2980b9;
         outline: none;
+    }
+    @include desktop{
+        display: none;
     }
 }

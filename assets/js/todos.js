@@ -11,30 +11,77 @@ $(document).ready(function(){
 			//_.sortBy(todo, ['name', 1]);
 		});
 	};
+	
 /*
-	$("#container").on("click", "span", function(todos){
-		//when clicked sort todo array
-		todos.sort();
-	});
+add event listener on click and order list az
+$("i").on("click", function(){
+	function addAllTodos(todos) {
+		var sorted = todos.sort((a, b) => {
+		  if (a.name < b.name) return -1;
+		  else if (a.name > b.name) return 1;
+		  else return 0;
+		});
+		//do your magic with sorted not with todos.
+		       todos.forEach((todo) => {
+		           //duplicated code made into function
+		           addSingleTodo(todo);
+		           //_.sortBy(todo, ['name', 1]);
+		        });
+	  };
+});
 */
 	//create new todo
 	//listens to keypress
-	$("#todoInput").keypress(function(event){	
+	$("#todoInput").keypress((event) =>{	
 		let userInput = $("#todoInput").val();	
 		//listen for enter key and check that input is not empty
 		if(event.which === 13 && userInput.length != 0){
 			//send request to create todo
 			$.post("/api/todos", {name: userInput})
-			.then(function(todoData){
+			.then((todoData)  => {
 				//clear user input
 				$('#todoInput').val('');
 				addSingleTodo(todoData);
 			})
-			.catch(function(err){
+			.catch((err) => {
 				console.log(err);
 			})
 		}
 	});
+
+	$(document).on('click', '#editable', function(event) 
+{
+	event.preventDefault(); 
+	if($(this).attr('edit_type') == 'button')
+	{
+		return false; 
+	}
+	//make editable
+	$(this).closest('li').attr('contenteditable', 'true');
+	$(this).focus();
+	//watch for enter key to finish edit
+	$("li").keypress((event) =>{
+		//get todo id
+		let editId = $(this).data("id");
+		//get editted name
+		let edittedName = $(this).text();
+		//console.log(edittedName);
+		if(event.which === 13){
+			event.preventDefault();
+			$.ajax({
+				method: "PUT",
+				url: "/api/todos/" + editId,
+				data: {name: edittedName} 
+			})
+			.then(function(){
+				console.log("succes")
+			})
+			.catch(function(err){
+				console.log(err);
+			});	
+		}
+	});
+});
 
 	//check off specific todos when clicked
 	//use on not click function to listen on already created item
@@ -73,7 +120,7 @@ $(document).ready(function(){
 			method: "DELETE",
 			url: "/api/todos/" + clickedId 
 		})
-		.then(function(data){
+		.then((data) =>{
 			console.log(data);
 			parent.fadeOut(500, function(){
 				parent.remove();
@@ -87,7 +134,7 @@ $(document).ready(function(){
 
 function addSingleTodo(todoData){
 	//create our new todo
-	let newTodo = $("<li><span><i class='far fa-trash-alt'></i></span>" + todoData.name + "</li>");
+	let newTodo = $("<li id='editable' contenteditable='false'><span><i class='far fa-trash-alt'></i></span>" + todoData.name + "<i class='far fa-check-circle'></i></li>");
 	//store todo id
 	newTodo.data("id", todoData._id);
 	//add completed boolean
@@ -97,5 +144,14 @@ function addSingleTodo(todoData){
 		newTodo.addClass("completed");
 	}
 	//append new todo
-	$("ul").append(newTodo);
+	$("#ulTodo").append(newTodo);
 };
+
+//toggle input
+$(".fas").click(function(){
+	$("#todoInput").fadeToggle();
+});
+//toggle for mobile
+$("#plusSign").click(function(){
+	$("#todoInput").fadeToggle();
+});
