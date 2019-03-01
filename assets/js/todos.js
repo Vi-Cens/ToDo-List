@@ -3,33 +3,31 @@ $(document).ready(function(){
 	$.getJSON("/api/todos")
 	.then(addAllTodos)
 
-	//insert todos from db to page
-	function addAllTodos(todos){
-		todos.forEach((todo) => {
-			//duplicated code made into function
-			addSingleTodo(todo);
-			//_.sortBy(todo, ['name', 1]);
-		});
-	};
-	
-/*
-add event listener on click and order list az
-$("i").on("click", function(){
-	function addAllTodos(todos) {
-		var sorted = todos.sort((a, b) => {
-		  if (a.name < b.name) return -1;
-		  else if (a.name > b.name) return 1;
-		  else return 0;
-		});
-		//do your magic with sorted not with todos.
-		       todos.forEach((todo) => {
-		           //duplicated code made into function
-		           addSingleTodo(todo);
-		           //_.sortBy(todo, ['name', 1]);
-		        });
-	  };
-});
-*/
+	//listener on sortAZ button
+	$("#sortAZ").on("click", function(){
+		//empty list
+		$("#ulTodo").empty();
+		$.getJSON("/api/todos")
+		.then(addSortedAZ)
+	});
+
+	//listener on sortZA button
+	$("#sortZA").on("click", function(){
+		//empty list
+		$("#ulTodo").empty();
+		$.getJSON("/api/todos")
+		.then(addSortedZA)
+	});
+
+	//listener on creation date button
+	$("#createdDate").on("click", function(){
+		console.log("ok")
+		//empty list
+		$("#ulTodo").empty();
+		$.getJSON("/api/todos")
+		.then(addSortedDate)
+	});
+
 	//create new todo
 	//listens to keypress
 	$("#todoInput").keypress((event) =>{	
@@ -71,16 +69,17 @@ $("i").on("click", function(){
 				method: "PUT",
 				url: "/api/todos/" + editId,
 				data: {name: edittedName} 
-			})
-			.then(function(){
+				})
+				.then(function(){
 				console.log("succes")
-			})
-			.catch(function(err){
+				})
+				.catch(function(err){
 				console.log(err);
-			});	
-		}
+				});	
+			}
+		});
 	});
-});
+
 	//check off specific todos when clicked
 	//use on not click function to listen on already created item
 	$("ul").on("click", ".fa-check-circle", function(event){	
@@ -90,8 +89,6 @@ $("i").on("click", function(){
 		let isDone = $(this).parent().data("completed");
 		//cant call this inside then function, out of scope
 		let update = $(this).parent();
-		console.log(update);
-
 		//put request !isDone so true => false
 		let updateData = {completed: !isDone}
 		$.ajax({
@@ -130,11 +127,29 @@ $("i").on("click", function(){
 			console.log(err);
 		})
 	});
+
+	//toggle input
+	$(".fas").click(function(){
+		$("#todoInput").fadeToggle();
+	});
+	//toggle for mobile
+	$("#plusSign").click(function(){
+		$("#todoInput").fadeToggle();
+	});
 });
 
+//insert todos from db to page
+function addAllTodos(todos){
+	todos.forEach((todo) => {
+		//duplicated code made into function
+		addSingleTodo(todo);
+	});
+};
+
+//adds only one todo, for loop to add all of them
 function addSingleTodo(todoData){
 	//create our new todo
-	let newTodo = $("<li id='editable' contenteditable='false'><span><i class='far fa-trash-alt'></i></span>" + todoData.name + "<i class='far fa-check-circle'></i></li>");
+	let newTodo = $("<li id='editable' contenteditable='false'><span contenteditable='false'><i class='far fa-trash-alt'></i></span>" + todoData.name + "<i contenteditable='false' class='far fa-check-circle'></i></li>");
 	//store todo id
 	newTodo.data("id", todoData._id);
 	//add completed boolean
@@ -147,11 +162,41 @@ function addSingleTodo(todoData){
 	$("#ulTodo").append(newTodo);
 };
 
-//toggle input
-$(".fas").click(function(){
-	$("#todoInput").fadeToggle();
-});
-//toggle for mobile
-$("#plusSign").click(function(){
-	$("#todoInput").fadeToggle();
-});
+//sorts todos from a to z
+function addSortedAZ(todos) {
+	var sorted = todos.sort((a, b) => {
+		if (a.name < b.name) return -1;
+		else if (a.name > b.name) return 1;
+		else return 0;
+	});
+	todos.forEach((todo) => {
+		//duplicated code made into function
+		addSingleTodo(todo);
+	});
+};
+
+//sorts todos from z to a
+function addSortedZA(todos) {
+	var sorted = todos.sort((a, b) => {
+		if (a.name < b.name) return 1;
+		else if (a.name > b.name) return -1;
+		else return 0;
+	});
+	todos.forEach((todo) => {
+		//duplicated code made into function
+		addSingleTodo(todo);
+		});
+};
+
+//sorts todos by date
+function addSortedDate(todos) {
+	var sorted = todos.sort((a, b) => {
+		if (a.created_date < b.created_date) return -1;
+		else if (a.created_date > b.created_date) return 1;
+		else return 0;
+	});
+	todos.forEach((todo) => {
+		//duplicated code made into function
+		addSingleTodo(todo);
+		});
+};
